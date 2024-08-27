@@ -4,12 +4,12 @@ const blogSchema = new Schema(
   {
     title: { type: String, required: true },
     description: String,
-    content: { type: Object, required: true },
+    content: { type: String, required: true },
     coverImg: String,
     category: String,
     author: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      type: String,
+    //   ref: "User",
       required: true,
     },
     rating: Number,
