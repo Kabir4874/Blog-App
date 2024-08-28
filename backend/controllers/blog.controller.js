@@ -58,5 +58,27 @@ class blogController {
       res.status(500).send({ message: "Error in getting post" });
     }
   };
+  update_blog = async (req, res) => {
+    try {
+      const postId = req.params.id;
+      const updatedPost = await Blog.findByIdAndUpdate(
+        postId,
+        {
+          ...req.body,
+        },
+        { new: true }
+      );
+      if (!updatedPost) {
+        res.status(404).send({ message: "Post not found" });
+      }
+      res.status(200).send({
+        message: "Post updated successfully",
+        updatedPost,
+      });
+    } catch (error) {
+      console.error("Error in updating post: ", error);
+      res.status(500).send({ message: "Error in updating post" });
+    }
+  };
 }
 module.exports = new blogController();
