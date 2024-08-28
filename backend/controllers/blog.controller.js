@@ -13,5 +13,17 @@ class blogController {
       res.status(500).send({ message: "Error in creating post" });
     }
   };
+  get_blogs = async (req, res) => {
+    try {
+      const posts = await Blog.find();
+      res.status(200).send({
+        message: "All posts retrieved successfully",
+        posts,
+      });
+    } catch (error) {
+      console.error("Error in getting post: ", error);
+      res.status(500).send({ message: "Error in getting post" });
+    }
+  };
 }
 module.exports = new blogController();
