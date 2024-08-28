@@ -80,5 +80,8 @@ class blogController {
       res.status(500).send({ message: "Error in updating post" });
     }
   };
+  delete_blog= async(req,res)=>{
+    console.log('delete blog');
+  }
 }
 module.exports = new blogController();
