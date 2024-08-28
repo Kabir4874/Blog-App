@@ -15,10 +15,43 @@ class blogController {
   };
   get_blogs = async (req, res) => {
     try {
-      const posts = await Blog.find();
+      const { search, category, location } = req.query;
+      let query = {};
+      if (search) {
+        query = {
+          ...query,
+          $or: [
+            { title: { $regex: search, $options: "i" } },
+            { content: { $regex: search, $options: "i" } },
+          ],
+        };
+      }
+      if (category) {
+        query = { ...query, category };
+      }
+      if (location) {
+        query = { ...query, location };
+      }
+      const posts = await Blog.find(query).sort({ createdAt: -1 });
       res.status(200).send({
         message: "All posts retrieved successfully",
         posts,
+      });
+    } catch (error) {
+      console.error("Error in getting posts: ", error);
+      res.status(500).send({ message: "Error in getting posts" });
+    }
+  };
+  get_blog_by_id = async (req, res) => {
+    try {
+      const postId = req.params.id;
+      const post = await Blog.findById(postId);
+      if (!post) {
+        res.status(404).send({ message: "Post not found" });
+      }
+      res.status(200).send({
+        message: "Post retrieved successfully",
+        post,
       });
     } catch (error) {
       console.error("Error in getting post: ", error);
