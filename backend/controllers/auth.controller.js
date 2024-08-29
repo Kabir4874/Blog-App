@@ -44,8 +44,33 @@ class authController {
       res.status(500).send({ message: "Error in login user" });
     }
   };
-  logout= async(req,res)=>{
-    console.log('logout');
-  }
+  logout = async (req, res) => {
+    try {
+      res.clearCookie("token");
+      res.status(200).send({ message: "Logged out successfully" });
+    } catch (error) {
+      console.error("Error in logout user: ", error);
+      res.status(500).send({ message: "Error in logout user" });
+    }
+  };
+  get_all_users = async (req, res) => {
+    try {
+      const users = await User.find({}, "id email role");
+      res.status(200).send({ message: "Users found successfully", users });
+    } catch (error) {
+      console.error("Error in getting users: ", error);
+      res.status(500).send({ message: "Error in getting users" });
+    }
+  };
+  delete_user = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const user = await User.findByIdAndDelete(id);
+      res.status(200).send({ message: "User deleted successfully" });
+    } catch (error) {
+      console.error("Error in deleting user: ", error);
+      res.status(500).send({ message: "Error in deleting user" });
+    }
+  };
 }
 module.exports = new authController();
