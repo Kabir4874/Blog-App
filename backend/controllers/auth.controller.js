@@ -72,5 +72,16 @@ class authController {
       res.status(500).send({ message: "Error in deleting user" });
     }
   };
+  update_user = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { role } = req.body;
+      const user = await User.findByIdAndUpdate(id, { role }, { new: true });
+      res.status(200).send({ message: "User role updated successfully", user });
+    } catch (error) {
+      console.error("Error in updating user: ", error);
+      res.status(500).send({ message: "Error in updating user" });
+    }
+  };
 }
 module.exports = new authController();

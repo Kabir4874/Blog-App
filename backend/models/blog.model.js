@@ -4,7 +4,7 @@ const blogSchema = new Schema(
   {
     title: { type: String, required: true },
     description: String,
-    content: { type: String, required: true },
+    content: { type: Object, required: true },
     coverImg: String,
     category: String,
     author: {

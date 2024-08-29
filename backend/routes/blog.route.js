@@ -1,5 +1,6 @@
 const express = require("express");
 const blogController = require("../controllers/blog.controller");
+const verifyToken = require("../middlewares/verifyToken");
 const router = express.Router();
 
 router.post("/create-post", blogController.create_post);

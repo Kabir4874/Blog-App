@@ -4,7 +4,7 @@ const Comment = require("../models/comment.model");
 class blogController {
   create_post = async (req, res) => {
     try {
-      const newPost = new Blog({ ...req.body });
+      const newPost = new Blog({ ...req.body, author: req.userId });
       await newPost.save();
       res
         .status(201)
@@ -33,7 +33,9 @@ class blogController {
       if (location) {
         query = { ...query, location };
       }
-      const posts = await Blog.find(query).sort({ createdAt: -1 });
+      const posts = await Blog.find(query)
+        .populate("author", "email")
+        .sort({ createdAt: -1 });
       res.status(200).send({
         message: "All posts retrieved successfully",
         posts,
