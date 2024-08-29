@@ -8,8 +8,8 @@ const blogSchema = new Schema(
     coverImg: String,
     category: String,
     author: {
-      type: String,
-    //   ref: "User",
+      type: Schema.Types.ObjectId,
+      ref: "User",
       required: true,
     },
     rating: Number,
