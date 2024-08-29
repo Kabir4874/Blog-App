@@ -8,6 +8,7 @@ export default {
         primary: "#222222",
         accent: "#34495E",
         alabaster:'#fafafa',
+        mariner:'#1e73be',
       },
     },
   },
