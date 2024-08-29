@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import SearchBlog from "./SearchBlog";
+import { useFetchBlogsQuery } from "../../redux/features/blogs/blogsApi";
+import { Link } from "react-router-dom";
 
 const Blogs = () => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
   const [query, setQuery] = useState({ search: "", category: "" });
+  const { data: blogs = [], error, isLoading } = useFetchBlogsQuery(query);
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
   };
@@ -16,7 +19,15 @@ const Blogs = () => {
         handleSearchChange={handleSearchChange}
         handleSearch={handleSearch}
       />
-      <div>Blog Card</div>
+      {isLoading && <div>Loading...</div>}
+      <div>
+        {blogs?.posts?.map((blog, index) => (
+          <Link key={index}>
+            <img src={blog.coverImg} alt="cover img" />
+            <h2>{blog.title}</h2>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 };
