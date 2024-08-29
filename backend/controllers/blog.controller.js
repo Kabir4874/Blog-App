@@ -1,4 +1,5 @@
 const Blog = require("../models/blog.model");
+const Comment = require("../models/comment.model");
 
 class blogController {
   create_post = async (req, res) => {
@@ -49,6 +50,10 @@ class blogController {
       if (!post) {
         res.status(404).send({ message: "Post not found" });
       }
+      const comments = await Comment.find({ postId }).populate(
+        "user",
+        "username email"
+      );
       res.status(200).send({
         message: "Post retrieved successfully",
         post,
@@ -80,8 +85,46 @@ class blogController {
       res.status(500).send({ message: "Error in updating post" });
     }
   };
-  delete_blog= async(req,res)=>{
-    console.log('delete blog');
-  }
+  delete_blog = async (req, res) => {
+    try {
+      const postId = req.params.id;
+      await Blog.findByIdAndDelete(postId);
+      await Comment.deleteMany({ postId });
+      res.status(200).send({
+        message: "Post deleted successfully",
+      });
+    } catch (error) {
+      console.error("Error in deleting post: ", error);
+      res.status(500).send({ message: "Error in deleting post" });
+    }
+  };
+  get_related_blogs = async (req, res) => {
+    try {
+      const { id } = req.params;
+      if (!id) {
+        res.status(404).send({ message: "Post id not found" });
+      }
+      const blog = await Blog.findById(id);
+      if (!blog) {
+        res.status(404).send({ message: "Post not found" });
+      }
+      const titleRegex = new RegExp(blog.title.split(" ").join("|"), "i");
+      const relatedQuery = {
+        _id: { $ne: id },
+        title: { $regex: titleRegex },
+      };
+      const relatedPosts = await Blog.find(relatedQuery);
+      if (!relatedPosts) {
+        res.status(404).send({ message: "Related posts not found" });
+      }
+      res.status(200).send({
+        message: "Related posts retrieved successfully",
+        relatedPosts,
+      });
+    } catch (error) {
+      console.error("Error in fetching related posts: ", error);
+      res.status(500).send({ message: "Error in fetching related posts" });
+    }
+  };
 }
 module.exports = new blogController();
