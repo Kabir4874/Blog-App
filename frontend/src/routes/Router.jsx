@@ -4,6 +4,7 @@ import Home from "../pages/Home";
 import About from "../pages/About";
 import PrivacyPolicy from "../pages/PrivacyPolicy";
 import ContactUs from "../pages/ContactUs";
+import SingleBlog from "../components/blogs/SingleBlog";
 
 const Router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const Router = createBrowserRouter([
       {
         path: "/contact-us",
         element: <ContactUs />,
+      },
+      {
+        path: "/blogs/:id",
+        element: <SingleBlog />,
       },
     ],
   },

@@ -7,7 +7,7 @@ const Blogs = () => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
   const [query, setQuery] = useState({ search: "", category: "" });
-  const { data: blogs = [], error, isLoading } = useFetchBlogsQuery(query);
+  const { data: blogs, error, isLoading } = useFetchBlogsQuery(query);
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
   };
@@ -20,11 +20,11 @@ const Blogs = () => {
         handleSearch={handleSearch}
       />
       {isLoading && <div>Loading...</div>}
-      <div>
+      <div className="mt-8 grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-8">
         {blogs?.posts?.map((blog, index) => (
-          <Link key={index}>
-            <img src={blog.coverImg} alt="cover img" />
-            <h2>{blog.title}</h2>
+          <Link to={`/blogs/${blog._id}`} key={index} className="shadow-md">
+            <img src={blog.coverImg} alt="cover img" className="h-80 w-full" />
+            <h2 className="text-xl p-4">{blog.title}</h2>
           </Link>
         ))}
       </div>
