@@ -50,6 +50,7 @@ export const {
   useFetchBlogsQuery,
   useFetchBlogByIdQuery,
   useFetchRelatedBlogsQuery,
+  usePostBlogMutation,
   useUpdateBlogMutation,
   useDeleteBlogMutation,
 } = blogApi;
