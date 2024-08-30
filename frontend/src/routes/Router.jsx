@@ -11,6 +11,7 @@ import AdminLayout from "../pages/admin/AdminLayout";
 import Dashboard from "../pages/admin/Dashboard";
 import AddPost from "../pages/admin/AddPost";
 import ManagePosts from "../pages/admin/ManagePosts";
+import UpdatePost from "../pages/admin/UpdatePost";
 
 const Router = createBrowserRouter([
   {
@@ -60,6 +61,10 @@ const Router = createBrowserRouter([
           {
             path: "manage-items",
             element: <ManagePosts />,
+          },
+          {
+            path: "update-items/:id",
+            element: <UpdatePost />,
           },
         ],
       },

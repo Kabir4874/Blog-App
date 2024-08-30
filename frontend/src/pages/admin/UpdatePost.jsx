@@ -2,9 +2,15 @@ import React, { useEffect, useRef, useState } from "react";
 import EditorJS from "@editorjs/editorjs";
 import Header from "@editorjs/header";
 import List from "@editorjs/list";
-import { usePostBlogMutation } from "../../redux/features/blogs/blogsApi";
+import {
+  useFetchBlogByIdQuery,
+  usePostBlogMutation,
+} from "../../redux/features/blogs/blogsApi";
 import { toast } from "react-hot-toast";
-const AddPost = () => {
+import { useParams } from "react-router-dom";
+
+const UpdatePost = () => {
+  const { id } = useParams();
   const editorRef = useRef(null);
   const [title, setTitle] = useState("");
   const [coverImg, setCoverImg] = useState("");
@@ -12,54 +18,62 @@ const AddPost = () => {
   const [category, setCategory] = useState("");
   const [rating, setRating] = useState(0);
   const [message, setMessage] = useState("");
-  const [postBlog, { isLoading }] = usePostBlogMutation();
-  useEffect(() => {
-    const editor = new EditorJS({
-      holder: "editorjs",
-      onReady: () => {
-        editorRef.current = editor;
-      },
-      autofocus: true,
-      tools: {
-        header: {
-          class: Header,
-          inlineToolbar: true,
-        },
-        list: {
-          class: List,
-          inlineToolbar: true,
-        },
-      },
-    });
 
-    return () => {
-      editor.destroy();
-      editorRef.current = null;
-    };
+  const {
+    data: { post } = {},
+    error,
+    isLoading,
+    refetch,
+  } = useFetchBlogByIdQuery(id);
+
+  useEffect(() => {
+    if (post) {
+      const editor = new EditorJS({
+        holder: "editorjs",
+        onReady: () => {
+          editorRef.current = editor;
+        },
+        autofocus: true,
+        tools: {
+          header: {
+            class: Header,
+            inlineToolbar: true,
+          },
+          list: {
+            class: List,
+            inlineToolbar: true,
+          },
+        },
+        data: post.content,
+      });
+
+      return () => {
+        editor.destroy();
+        editorRef.current = null;
+      };
+    }
   }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const content = await editorRef.current.save();
-      const newPost = {
-        title,
-        coverImg,
-        content,
-        description: metaDescription,
+      const updatePost = {
+        title: title || post.title,
+        coverImg: coverImg || post.coverImg,
+        content: content,
+        description: metaDescription || post.description,
         author: "66d01fc507b773f95a28d116",
-        rating,
+        rating: rating || post.rating,
       };
-      const response = await postBlog(newPost).unwrap();
-      toast.success("Blog Added Successfully");
+      const response = await postBlog(updatePost).unwrap();
+      toast.success("Blog Updated Successfully");
     } catch (error) {
-      console.log("Failed to submit post");
+      console.log("Failed to update post");
     }
   };
   return (
     <div className="bg-white md:p-8 p-2">
-      <h2 className="text-2xl font-semibold capitalize">
-        Create a new blog post
-      </h2>
+      <h2 className="text-2xl font-semibold capitalize">Update Blog Post</h2>
       <form onSubmit={handleSubmit} className="space-y-5 pt-8">
         <div className="space-y-4">
           <label htmlFor="" className="font-semibold text-xl">
@@ -67,7 +81,7 @@ const AddPost = () => {
           </label>
           <input
             type="text"
-            value={title}
+            defaultValue={post?.title}
             onChange={(e) => setTitle(e.target.value)}
             required
             placeholder="Ex: Marina del rey marriott..."
@@ -91,7 +105,7 @@ const AddPost = () => {
               </label>
               <input
                 type="text"
-                value={coverImg}
+                defaultValue={post?.coverImg}
                 onChange={(e) => setCoverImg(e.target.value)}
                 required
                 placeholder="cover image link"
@@ -104,7 +118,7 @@ const AddPost = () => {
               </label>
               <input
                 type="text"
-                value={category}
+                defaultValue={post?.category}
                 onChange={(e) => setCategory(e.target.value)}
                 required
                 placeholder="Rooftop/Gardening/something"
@@ -119,7 +133,7 @@ const AddPost = () => {
                 cols={4}
                 rows={4}
                 type="text"
-                value={metaDescription}
+                defaultValue={post?.description}
                 onChange={(e) => setMetaDescription(e.target.value)}
                 required
                 placeholder="Add Meta Data to increase SEO performance"
@@ -132,7 +146,7 @@ const AddPost = () => {
               </label>
               <input
                 type="number"
-                value={rating}
+                defaultValue={post?.rating}
                 onChange={(e) => setRating(e.target.value)}
                 required
                 className="w-full inline-block bg-bgPrimary focus:outline-none px-5 py-3"
@@ -164,4 +178,4 @@ const AddPost = () => {
   );
 };
 
-export default AddPost;
+export default UpdatePost;
