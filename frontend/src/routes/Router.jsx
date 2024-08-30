@@ -7,6 +7,10 @@ import ContactUs from "../pages/ContactUs";
 import SingleBlog from "../components/blogs/SingleBlog";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
+import AdminLayout from "../pages/admin/AdminLayout";
+import Dashboard from "../pages/admin/Dashboard";
+import AddPost from "../pages/admin/AddPost";
+import ManagePosts from "../pages/admin/ManagePosts";
 
 const Router = createBrowserRouter([
   {
@@ -40,6 +44,24 @@ const Router = createBrowserRouter([
       {
         path: "/register",
         element: <Register />,
+      },
+      {
+        path: "dashboard",
+        element: <AdminLayout />,
+        children: [
+          {
+            path: "",
+            element: <Dashboard />,
+          },
+          {
+            path: "add-new-post",
+            element: <AddPost />,
+          },
+          {
+            path: "manage-items",
+            element: <ManagePosts />,
+          },
+        ],
       },
     ],
   },
