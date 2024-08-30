@@ -5,6 +5,7 @@ import About from "../pages/About";
 import PrivacyPolicy from "../pages/PrivacyPolicy";
 import ContactUs from "../pages/ContactUs";
 import SingleBlog from "../components/blogs/SingleBlog";
+import Login from "../pages/Login";
 
 const Router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const Router = createBrowserRouter([
       {
         path: "/blogs/:id",
         element: <SingleBlog />,
+      },
+      {
+        path: "/login",
+        element: <Login />,
       },
     ],
   },

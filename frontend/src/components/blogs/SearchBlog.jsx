@@ -16,7 +16,12 @@ const SearchBlog = ({ search, handleSearchChange, handleSearch }) => {
         placeholder="Hotels with Rooftop Pool Near..."
         className="py-2 px-4 mr-5 w-full bg-bgPrimary outline-none border border-gray-100 focus:border-gray-300"
       />
-      <button className=" bg-mariner px-4 py-2 text-white">Search</button>
+      <button
+        onClick={handleSearch}
+        className=" bg-mariner px-4 py-2 text-white"
+      >
+        Search
+      </button>
     </div>
   );
 };
