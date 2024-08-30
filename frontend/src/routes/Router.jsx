@@ -6,6 +6,7 @@ import PrivacyPolicy from "../pages/PrivacyPolicy";
 import ContactUs from "../pages/ContactUs";
 import SingleBlog from "../components/blogs/SingleBlog";
 import Login from "../pages/Login";
+import Register from "../pages/Register";
 
 const Router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ const Router = createBrowserRouter([
       {
         path: "/login",
         element: <Login />,
+      },
+      {
+        path: "/register",
+        element: <Register />,
       },
     ],
   },

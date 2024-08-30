@@ -1,14 +1,21 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-
-const Login = () => {
+const Register = () => {
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   return (
     <div className="max-w-sm bg-white mx-auto p-8 mt-36">
-      <h2 className="text-2xl font-semibold pt-5">Please Login</h2>
+      <h2 className="text-2xl font-semibold pt-5">Please Register</h2>
       <form className="space-y-5 max-w-sm  mx-auto pt-8">
+        <input
+          type="text"
+          value={username}
+          placeholder="username"
+          required
+          className="w-full bg-bgPrimary focus:outline-none px-5 py-3"
+        />
         <input
           type="email"
           value={email}
@@ -29,9 +36,9 @@ const Login = () => {
         </button>
       </form>
       <p className="my-5 text-center">
-        Don't have an account?{" "}
-        <Link to={"/register"} className="text-red-700 italic">
-          Register
+        Already have an account?{" "}
+        <Link to={"/login"} className="text-red-700 italic">
+          Login
         </Link>{" "}
         here.
       </p>
@@ -39,4 +46,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
