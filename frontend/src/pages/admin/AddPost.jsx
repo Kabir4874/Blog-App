@@ -2,8 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import EditorJS from "@editorjs/editorjs";
 import Header from "@editorjs/header";
 import List from "@editorjs/list";
+import LinkTool from "@editorjs/link";
+import SimpleImage from "@editorjs/simple-image";
 import { usePostBlogMutation } from "../../redux/features/blogs/blogsApi";
 import { toast } from "react-hot-toast";
+
 const AddPost = () => {
   const editorRef = useRef(null);
   const [title, setTitle] = useState("");
@@ -29,6 +32,11 @@ const AddPost = () => {
           class: List,
           inlineToolbar: true,
         },
+        link: {
+          class: LinkTool,
+          inlineToolbar: true,
+        },
+        image: SimpleImage,
       },
     });
 
